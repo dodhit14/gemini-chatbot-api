@@ -64,13 +64,13 @@ gemini-chatbot-api/
 ### 1. Clone repository
 
 ```bash
-git clone https://github.com/USERNAME/REPOSITORY.git
+git clone https://github.com/dodhit14/gemini-chatbot-api.git
 ```
 
 Masuk ke folder project
 
 ```bash
-cd REPOSITORY
+cd gemini-chatbot-api
 ```
 
 ---
@@ -83,9 +83,16 @@ npm install
 
 ---
 
-### 3. Create `.env`
+### 3. Generate `GEMINI_API_KEY` melalui Google AI Studio
+- Kunjungi website ```https://aistudio.google.com/app/api-keys.```
+- Pastikan anda sudah login dengan akun google yang aktif.
+- Klik tombol ``Create API Key``
+- Isikan nama key dan pilih project yang diinginkan
+- Klik ``create Key``
+- Setelah proses simpan selesai, silakan salin `GEMINI_API_KEY` yang telah digenerate.
 
-Buat file `.env`
+### 4. Ubah nama file `env.example` ke `.env`
+Tempelkan `GEMINI_API_KEY` yang telah di salin dari website Google AI Studio.
 
 ```env
 GEMINI_API_KEY=YOUR_API_KEY
@@ -94,7 +101,7 @@ PORT=3000
 
 ---
 
-### 4. Run server
+### 5. Run server
 
 ```bash
 node index.js
@@ -157,19 +164,12 @@ Chatbot menggunakan format conversation yang mengikuti Google Gemini API.
 
 ## 📷 Preview
 
-Tambahkan screenshot aplikasi di folder berikut:
-
-```
-docs/
-    preview.png
-```
-
-Lalu tampilkan menggunakan:
+Tampilan aplikasi Gemini Chatbot -- Perawatan Tanaman
 
 ```markdown
-![Preview](docs/preview.png)
-```
+<img width="1122" height="942" alt="image" src="https://github.com/user-attachments/assets/92c684de-6a9d-4a73-b66e-41f56e58c6e3" />
 
+```
 ---
 
 ## ⚠️ Known Issues
