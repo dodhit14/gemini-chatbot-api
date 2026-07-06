@@ -56,6 +56,7 @@ async function handleSubmit(event) {
     input.value = "";
 
     appendMessage("user", message);
+    const typingBubble = showTypingIndicator();
 
     conversation.push({
         role: "user",
@@ -68,7 +69,8 @@ async function handleSubmit(event) {
 
         const answer = await sendToGemini();
 
-        appendMessage("bot", answer);
+        typingBubble.classList.remove("typing");
+        typingBubble.innerHTML = marked.parse(answer);
 
         conversation.push({
             role: "model",
@@ -76,13 +78,20 @@ async function handleSubmit(event) {
         });
 
     } catch (error) {
+        typingBubble.classList.remove("typing");
 
-        console.error(error);
+        if (error.message.includes("high demand")) {
 
-        appendMessage(
-            "bot",
-            "Maaf, terjadi kesalahan saat menghubungi server."
-        );
+            typingBubble.textContent =
+                "🌱 Layanan AI sedang sibuk. Silakan coba lagi dalam beberapa saat.";
+
+        } else {
+
+            typingBubble.textContent =
+                "Terjadi kesalahan. Silakan coba lagi.";
+
+        }
+
 
     } finally {
 
@@ -99,31 +108,67 @@ async function handleSubmit(event) {
  */
 async function sendToGemini() {
 
-    console.log(JSON.stringify(conversation, null, 2));
-    const response = await fetch("/api/chat", {
+    const MAX_RETRY = 3;
 
-        method: "POST",
+    for (let attempt = 1; attempt <= MAX_RETRY; attempt++) {
 
-        headers: {
-            "Content-Type": "application/json"
-        },
+        try {
 
-        body: JSON.stringify({
-            conversation
-        })
+            const response = await fetch("/api/chat", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    conversation
+                })
+            });
 
-    });
+            const data = await response.json();
 
-    const data = await response.json();
+            if (response.ok && data.success) {
+                return data.answer;
+            }
 
-    if (!response.ok || !data.success) {
+            const message = data.message || "";
 
-        throw new Error(data.message || "Request gagal.");
+            // Retry hanya jika Gemini sedang sibuk
+            if (
+                response.status === 500 &&
+                message.includes("high demand")
+            ) {
+
+                if (attempt < MAX_RETRY) {
+
+                    console.log(`Retry ${attempt}/${MAX_RETRY}...`);
+
+                    await delay(attempt * 1500);
+
+                    continue;
+                }
+
+            }
+
+            throw new Error(message || "Request gagal.");
+
+        } catch (error) {
+
+            if (attempt >= MAX_RETRY) {
+                throw error;
+            }
+
+            console.log(`Retry ${attempt}/${MAX_RETRY}`);
+
+            await delay(attempt * 1500);
+
+        }
 
     }
 
-    return data.answer;
+}
 
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 /**
@@ -136,13 +181,42 @@ function appendMessage(sender, text) {
 
     const bubble = document.createElement("div");
     bubble.className = "bubble";
-    bubble.textContent = text;
+    bubble.innerHTML = marked.parse(text);
 
     wrapper.appendChild(bubble);
 
     chatBox.appendChild(wrapper);
 
     scrollToBottom();
+
+}
+
+/**
+ * Typing Indicator
+ */
+function showTypingIndicator() {
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "message bot";
+
+    const bubble = document.createElement("div");
+    bubble.className = "bubble typing";
+
+    bubble.innerHTML = `
+        <div class="typing-indicator">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    `;
+
+    wrapper.appendChild(bubble);
+
+    chatBox.appendChild(wrapper);
+
+    scrollToBottom();
+
+    return bubble;
 
 }
 

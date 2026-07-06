@@ -101,11 +101,8 @@ body {
 .message {
 
     width: 100%;
-
     display: flex;
-
     animation: fadeUp .25s ease;
-
 }
 
 .message.user {
@@ -127,21 +124,105 @@ body {
 .bubble {
 
     max-width: 75%;
-
     padding: 14px 18px;
-
     border-radius: 18px;
-
     font-size: 15px;
-
-    line-height: 1.7;
-
+    line-height: 1.5;
     white-space: pre-wrap;
-
-    word-break: break-word;
+    /* word-break: break-word; */
 
 }
+/* Markdown */
 
+.bubble p {
+    margin: 0 0 12px;
+}
+
+.bubble p:last-child {
+    margin-bottom: 0;
+}
+
+.bubble strong {
+    font-weight: 700;
+}
+
+.bubble em {
+    font-style: italic;
+}
+
+.bubble ul,
+.bubble ol {
+    margin: 10px 0;
+    padding-left: 22px;
+}
+
+.bubble li {
+    margin: 6px 0;
+}
+
+.bubble h1,
+.bubble h2,
+.bubble h3,
+.bubble h4 {
+    margin: 12px 0;
+    font-weight: 700;
+}
+
+.bubble code {
+    background: #f3f4f6;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: Consolas, monospace;
+}
+
+.bubble pre {
+    background: #1e1e1e;
+    color: white;
+    padding: 14px;
+    border-radius: 8px;
+    overflow-x: auto;
+}
+
+.bubble.typing {
+    color: #666;
+    font-style: italic;
+}
+
+.typing-indicator {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.typing-indicator span {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #999;
+    animation: typingBounce 1.2s infinite ease-in-out;
+}
+
+.typing-indicator span:nth-child(2) {
+    animation-delay: .2s;
+}
+
+.typing-indicator span:nth-child(3) {
+    animation-delay: .4s;
+}
+
+@keyframes typingBounce {
+
+    0%, 80%, 100% {
+        transform: scale(.5);
+        opacity: .5;
+    }
+
+    40% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+}
 /* ===========================
    BOT
 =========================== */
