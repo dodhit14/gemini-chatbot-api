@@ -166,10 +166,9 @@ Chatbot menggunakan format conversation yang mengikuti Google Gemini API.
 
 Tampilan aplikasi Gemini Chatbot -- Perawatan Tanaman
 
-```markdown
+
 <img width="1122" height="942" alt="image" src="https://github.com/user-attachments/assets/92c684de-6a9d-4a73-b66e-41f56e58c6e3" />
 
-```
 ---
 
 ## ⚠️ Known Issues
