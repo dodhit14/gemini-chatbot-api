@@ -53,7 +53,7 @@ gemini-chatbot-api/
 ├── index.js
 ├── package.json
 ├── package-lock.json
-├── .env
+├── env.example
 └── README.md
 ```
 
